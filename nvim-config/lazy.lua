@@ -14,6 +14,10 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+-- Leader 必须在 lazy.setup 之前设置（LazyVim 会自动设，但 VSCode 分支跳过了 LazyVim）
+vim.g.mapleader = " "
+vim.g.maplocalleader = "\\"
+
 if vim.g.vscode then
   -- ══════════════════════════════════════════════════════════
   -- VSCode / Cursor 模式：只加载文本操作类插件
