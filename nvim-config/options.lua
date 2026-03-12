@@ -21,7 +21,6 @@ opt.cursorline = true -- 高亮当前行
 opt.termguicolors = true -- 真彩色
 opt.signcolumn = "yes" -- 始终显示符号列
 opt.clipboard = "unnamedplus" -- 系统剪贴板共享
-opt.timeoutlen = 300 -- leader 后续按键等待（默认 1000，LazyVim 用 300）
 opt.undofile = true
 
 if vim.g.vscode then opt.undofile = false end
