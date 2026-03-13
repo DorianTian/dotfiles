@@ -1,17 +1,8 @@
 {
-  "name": "@dorian/prettier-config",
+  "name": "cursor-vscode-config",
   "version": "1.0.0",
+  "private": true,
   "description": "Comprehensive code formatting config - Prettier, ESLint, Ruff, gofmt, sql-formatter",
-  "main": "index.js",
-  "files": [
-    "index.js",
-    ".prettierrc.js",
-    ".prettierignore",
-    ".editorconfig",
-    "eslint.config.js",
-    "ruff.toml",
-    "sql-formatter.json"
-  ],
   "scripts": {
     "format": "prettier --write .",
     "format:check": "prettier --check .",
@@ -27,15 +18,6 @@
     "prettier-plugin-sql": "^0.18.0",
     "sql-formatter": "^15.0.0"
   },
-  "peerDependencies": {
-    "eslint": ">=9.0.0",
-    "typescript": ">=5.0.0"
-  },
-  "peerDependenciesMeta": {
-    "typescript": {
-      "optional": true
-    }
-  },
   "devDependencies": {
     "eslint": "^9.0.0",
     "eslint-config-prettier": "^10.0.0",
@@ -47,14 +29,5 @@
     "vue-eslint-parser": "^9.4.0",
     "globals": "^15.0.0"
   },
-  "keywords": [
-    "prettier",
-    "eslint",
-    "config",
-    "formatter",
-    "react",
-    "vue",
-    "typescript"
-  ],
   "license": "MIT"
 }

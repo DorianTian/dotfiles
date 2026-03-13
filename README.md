@@ -380,26 +380,6 @@ The setup script will:
 4. Merge VS Code / Cursor editor settings
 5. Validate all tools are available
 
-### Usage as Shareable npm Config
-
-In your project's `package.json`:
-
-```json
-{
-  "prettier": "@dorian/prettier-config"
-}
-```
-
-Or extend in `.prettierrc.js`:
-
-```js
-const baseConfig = require('@dorian/prettier-config');
-module.exports = {
-  ...baseConfig,
-  printWidth: 100, // override as needed
-};
-```
-
 ### ESLint Integration
 
 **Projects WITH existing ESLint config:**
@@ -473,7 +453,6 @@ ruff.toml            — Python ruff format + lint config
 sql-formatter.json   — SQL formatting rules
 vscode/settings.json — VS Code / Cursor recommended settings
 setup.sh             — One-click local environment setup
-index.js             — npm package entry (shareable config)
 ```
 
 ### Recommended VS Code / Cursor Extensions
