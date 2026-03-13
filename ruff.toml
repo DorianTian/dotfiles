@@ -1,0 +1,58 @@
+# Ruff Configuration — Python formatting + linting
+# Compatible with Black style, replaces black + isort + flake8 + pyupgrade
+# https://docs.astral.sh/ruff/configuration/
+
+# Target Python version
+target-version = "py311"
+
+# Max line length — consistent with Prettier printWidth
+line-length = 120
+
+# File exclusions
+exclude = [
+    ".venv",
+    "venv",
+    "__pycache__",
+    ".git",
+    "node_modules",
+    "dist",
+    "build",
+    ".eggs",
+    "*.egg-info",
+]
+
+# --------------------------------------------------------------------------
+# Formatter (ruff format) — Black-compatible style
+# --------------------------------------------------------------------------
+[format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"
+docstring-code-format = true
+
+# --------------------------------------------------------------------------
+# Linter (ruff check) — curated rule set
+# --------------------------------------------------------------------------
+[lint]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "I",    # isort — import sorting
+    "N",    # pep8-naming
+    "UP",   # pyupgrade — modernize syntax
+    "B",    # flake8-bugbear — common bugs
+    "SIM",  # flake8-simplify — simplifiable code
+    "C4",   # flake8-comprehensions
+    "DTZ",  # flake8-datetimez — timezone-aware datetime
+    "RUF",  # Ruff-specific rules
+]
+
+ignore = [
+    "E501",   # line-too-long — handled by formatter
+    "B008",   # function-call-in-default-argument — common in FastAPI
+]
+
+[lint.isort]
+known-first-party = []
+combine-as-imports = true

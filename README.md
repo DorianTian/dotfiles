@@ -13,7 +13,18 @@ cursor_vscode_config/
 │   ├── lazy.lua            # VSCode 模式只加载 surround，终端加载完整 LazyVim
 │   ├── keymaps.lua         # 80+ 统一快捷键（vim.g.vscode 双分支）
 │   └── options.lua         # 三端共享选项
-├── .prettierrc             # 全局 Prettier 配置
+├── formatter/              # 统一代码格式化配置
+│   ├── .prettierrc.js      # Prettier 主配置（React/Vue overrides）
+│   ├── .prettierignore     # Prettier 忽略规则
+│   ├── eslint.config.js    # 标准 ESLint 基线（无 ESLint 的项目使用）
+│   ├── ruff.toml           # Python ruff 格式化 + lint
+│   ├── sql-formatter.json  # SQL 格式化
+│   ├── .editorconfig       # 通用编辑器基线
+│   ├── vscode/settings.json# VS Code / Cursor 推荐配置
+│   ├── setup.sh            # 一键安装脚本
+│   ├── index.js            # npm 包入口（shareable config）
+│   └── package.json        # npm 包定义
+├── .prettierrc             # 全局 Prettier 配置（旧）
 ├── install.sh              # 一键安装脚本
 ├── SKILL.md                # Claude Code skill 定义
 └── README.md
@@ -319,10 +330,10 @@ cp .prettierrc ~/
 
 | LazyVim 功能 | VSCode 状态 | 替代方案 |
 |-------------|-------------|----------|
-| `[f` / `]f` 函数跳转 | ❌ 无等价命令 | `<leader>ss` 打开 Symbol 列表 |
-| Telescope 浮窗 | ❌ 无法复现 | VSCode Quick Open / 命令面板 |
-| Neo-tree 文件树 | ❌ 无法复现 | `<leader>e` 侧边栏 |
-| which-key 提示 | ❌ 无法复现 | 查看本文档 |
+| `[f` / `]f` 函数跳转 | 无等价命令 | `<leader>ss` 打开 Symbol 列表 |
+| Telescope 浮窗 | 无法复现 | VSCode Quick Open / 命令面板 |
+| Neo-tree 文件树 | 无法复现 | `<leader>e` 侧边栏 |
+| which-key 提示 | 无法复现 | 查看本文档 |
 | Treesitter textobjects | 部分支持 | 内置的 `vaf` 等不可用 |
 
 ---
@@ -334,3 +345,145 @@ cp .prettierrc ~/
 - **添加插件**：只加到 `~/.config/nvim/lua/plugins/`，VSCode 模式自动跳过
 - **换主题**：改 `settings.json` 的 `colorTheme` + `iconTheme`，同时更新 `tokenColorCustomizations` 的 scope 名
 - **遇到 `nvim_win_set_cursor` 错误**：`Cmd+Shift+P` → `Neovim: Restart`
+
+---
+
+## 统一代码格式化配置
+
+Enterprise-grade code formatting setup covering frontend, backend, and database languages.
+
+### Supported Languages & Tools
+
+| Language | Formatter | Linter | Reference Standard |
+|---|---|---|---|
+| JavaScript / TypeScript | Prettier | ESLint | Airbnb + Google Style |
+| React (JSX/TSX) | Prettier | ESLint + react-hooks | Airbnb React Style Guide |
+| Vue (SFC) | Prettier | ESLint + eslint-plugin-vue | Vue Official Style Guide (A+B) |
+| CSS / SCSS / Less | Prettier | — | Google HTML/CSS Style |
+| HTML | Prettier | — | Google HTML/CSS Style |
+| JSON / YAML / Markdown | Prettier | — | — |
+| Go | gofmt + goimports | golangci-lint | Go Official Standard |
+| Python | ruff format | ruff check | Black-compatible + PEP 8 |
+| SQL | sql-formatter | — | Generic SQL, keywords UPPER |
+
+### Formatter Quick Start
+
+```bash
+cd cursor_vscode_config
+./setup.sh
+```
+
+The setup script will:
+1. Install all npm dependencies (Prettier, ESLint, plugins)
+2. Install ruff (Python) and goimports (Go) if missing
+3. Symlink config files to `$HOME`
+4. Merge VS Code / Cursor editor settings
+5. Validate all tools are available
+
+### Usage as Shareable npm Config
+
+In your project's `package.json`:
+
+```json
+{
+  "prettier": "@dorian/prettier-config"
+}
+```
+
+Or extend in `.prettierrc.js`:
+
+```js
+const baseConfig = require('@dorian/prettier-config');
+module.exports = {
+  ...baseConfig,
+  printWidth: 100, // override as needed
+};
+```
+
+### ESLint Integration
+
+**Projects WITH existing ESLint config:**
+
+```bash
+npm install -D eslint-config-prettier
+```
+
+Add as the LAST entry in your ESLint config:
+
+```js
+// eslint.config.js (flat config)
+const prettierConfig = require('eslint-config-prettier');
+module.exports = [...yourExistingConfig, prettierConfig];
+```
+
+```js
+// .eslintrc.js (legacy format)
+module.exports = {
+  extends: [...yourExistingExtends, 'prettier'],
+};
+```
+
+**Projects WITHOUT ESLint config:**
+
+Copy the standard baseline:
+
+```bash
+cp eslint.config.js your-project/
+npm install -D eslint @eslint/js typescript-eslint eslint-config-prettier \
+  eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-vue vue-eslint-parser globals
+```
+
+### CLI Commands
+
+```bash
+# Format
+npx prettier --write "src/**/*.{js,ts,jsx,tsx,vue,css,scss,html}"
+ruff format .
+gofmt -w . && goimports -w .
+
+# Check
+npx prettier --check .
+npx eslint .
+ruff check .
+
+# Combined
+npm run check
+```
+
+### Key Design Decisions
+
+**React vs Vue attribute formatting:**
+- **Vue**: `singleAttributePerLine: true` — Vue Official Style Guide (Priority B) requires each attribute on its own line
+- **React**: `singleAttributePerLine: false` — React community convention lets `printWidth` decide natural line breaks
+
+**JSX quotes:**
+JSX uses double quotes (`jsxSingleQuote: false`) while JS uses single quotes — consistent with HTML conventions and Airbnb React Style Guide.
+
+**ESLint + Prettier coexistence:**
+Prettier handles ALL formatting. ESLint handles code quality only. `eslint-config-prettier` disables every ESLint rule that would conflict with Prettier. Existing project ESLint rules always take priority.
+
+### Formatter File Structure
+
+```
+.prettierrc.js       — Prettier config with per-language overrides
+.prettierignore      — Files excluded from formatting
+.editorconfig        — Universal editor baseline (cross-IDE)
+eslint.config.js     — Standard ESLint baseline (for new projects)
+ruff.toml            — Python ruff format + lint config
+sql-formatter.json   — SQL formatting rules
+vscode/settings.json — VS Code / Cursor recommended settings
+setup.sh             — One-click local environment setup
+index.js             — npm package entry (shareable config)
+```
+
+### Recommended VS Code / Cursor Extensions
+
+- [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+- [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+- [Ruff](https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff)
+- [Go](https://marketplace.visualstudio.com/items?itemName=golang.go)
+- [EditorConfig](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig)
+
+## License
+
+MIT
