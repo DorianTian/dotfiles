@@ -1,7 +1,5 @@
 [
-    // ══════════════════════════════════════════════════════════
-    // 历史导航：Alt+Cmd+Left/Right（覆盖默认 Ctrl+-/Shift+-）
-    // ══════════════════════════════════════════════════════════
+    // ══ 用户原有 ══
     {
         "key": "alt+cmd+left",
         "command": "workbench.action.navigateBack",
@@ -22,10 +20,6 @@
         "command": "-workbench.action.navigateForward",
         "when": "canNavigateForward"
     },
-
-    // ══════════════════════════════════════════════════════════
-    // Cursor AI（仅 Cursor IDE 有效，VSCode 可忽略）
-    // ══════════════════════════════════════════════════════════
     {
         "key": "cmd+i",
         "command": "composerMode.agent"
@@ -38,7 +32,6 @@
 
     // ══════════════════════════════════════════════════════════
     // 窗口导航：Ctrl+h/j/k/l → 直接绑 VSCode action（不经过 neovim）
-    // 原因：VSCode/macOS 会在 neovim 之前拦截 Ctrl 组合键
     // ══════════════════════════════════════════════════════════
 
     // Ctrl+h → 聚焦左侧编辑器组（覆盖默认 Find & Replace）
@@ -96,7 +89,7 @@
     },
 
     // ══════════════════════════════════════════════════════════
-    // Alt+j/k 移动行（macOS Alt 产生死键 ∆/˚，必须在这里绑定）
+    // Alt+j/k 移动行（macOS Alt 产生死键，必须在这里绑定）
     // ══════════════════════════════════════════════════════════
     {
         "key": "alt+j",
@@ -107,5 +100,27 @@
         "key": "alt+k",
         "command": "editor.action.moveLinesUpAction",
         "when": "editorTextFocus && !suggestWidgetVisible"
+    },
+
+    // ══════════════════════════════════════════════════════════
+    // 搜索结果导航（纯键盘）
+    // 搜索框中 Ctrl+j → 跳到结果列表
+    // 结果列表中 Ctrl+j/k → 上下浏览（不打开文件）
+    // Enter → 打开选中的结果
+    // ══════════════════════════════════════════════════════════
+    {
+        "key": "ctrl+j",
+        "command": "search.action.focusSearchList",
+        "when": "searchInputBoxFocus"
+    },
+    {
+        "key": "ctrl+j",
+        "command": "list.focusDown",
+        "when": "listFocus && searchViewletVisible"
+    },
+    {
+        "key": "ctrl+k",
+        "command": "list.focusUp",
+        "when": "listFocus && searchViewletVisible"
     }
 ]

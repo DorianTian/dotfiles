@@ -5,7 +5,7 @@
   "editor.fontWeight": "400",
   "editor.fontLigatures": "'calt', 'liga', 'ss01', 'ss02'",
   "editor.fontVariations": true,
-  "terminal.integrated.fontFamily": "'Maple Mono', 'Victor Mono', 'JetBrains Mono'",
+  "terminal.integrated.fontFamily": "'JetBrainsMono Nerd Font', 'Maple Mono', 'Victor Mono', 'JetBrains Mono'",
   "terminal.integrated.fontSize": 14,
   "terminal.integrated.fontWeightBold": "bold",
   "terminal.integrated.fontLigatures.enabled": true,
@@ -21,7 +21,6 @@
   "editor.suggestFontSize": 14,
   "errorLens.fontFamily": "'Victor Mono'",
   "errorLens.fontSize": "13",
-  // ══ 主题 & 外观 ══
   "workbench.colorTheme": "Dracula Theme",
   "workbench.iconTheme": "vscode-jetbrains-icon-theme",
   "workbench.productIconTheme": "icons-carbon",
@@ -132,6 +131,38 @@
       "source.organizeImports": "explicit"
     }
   },
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.tabSize": 4,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.ruff": "explicit",
+      "source.organizeImports.ruff": "explicit"
+    }
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.wordWrap": "on"
+  },
+  // ══ ESLint ══
+  "eslint.enable": true,
+  "eslint.useFlatConfig": true,
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "vue"
+  ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  // ══ 文件清理 ══
+  "files.eol": "\n",
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "files.associations": {
+    "*.vue": "vue"
+  },
   // ══ 语言 & 工具 ══
   "go.formatTool": "goimports",
   "go.toolsManagement.autoUpdate": true,
@@ -157,9 +188,18 @@
   "makefile.configureOnOpen": true,
   "security.promptForLocalFileProtocolHandling": false,
   "keyboard.dispatch": "keyCode",
-  // ══ 代理（按需修改）══
-  // "http.proxy": "http://127.0.0.1:6152",
-  // "http.proxyStrictSSL": false,
+  // ══ 代理 ══
+  "http.proxy": "http://127.0.0.1:6152",
+  "http.proxyStrictSSL": false,
+  // ══ MSSQL ══
+  "mssql.connectionGroups": [
+    {
+      "name": "ROOT",
+      "id": "F54B25D2-97D4-4D72-8B1D-C547843CDFBA"
+    }
+  ],
+  "mssql.connections": [],
+  "mssql.intelliSense.enableIntelliSense": false,
   // ══ Claude Code ══
   "claudeCode.useTerminal": true,
   "claudeCode.environmentVariables": [],
