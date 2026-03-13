@@ -188,18 +188,9 @@
   "makefile.configureOnOpen": true,
   "security.promptForLocalFileProtocolHandling": false,
   "keyboard.dispatch": "keyCode",
-  // ══ 代理 ══
-  "http.proxy": "http://127.0.0.1:6152",
-  "http.proxyStrictSSL": false,
-  // ══ MSSQL ══
-  "mssql.connectionGroups": [
-    {
-      "name": "ROOT",
-      "id": "F54B25D2-97D4-4D72-8B1D-C547843CDFBA"
-    }
-  ],
-  "mssql.connections": [],
-  "mssql.intelliSense.enableIntelliSense": false,
+  // ══ 代理（按需修改）══
+  // "http.proxy": "http://127.0.0.1:6152",
+  // "http.proxyStrictSSL": false,
   // ══ Claude Code ══
   "claudeCode.useTerminal": true,
   "claudeCode.environmentVariables": [],
