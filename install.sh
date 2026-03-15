@@ -227,12 +227,14 @@ install_nvim() {
     backup_and_copy "$SCRIPT_DIR/nvim-config/$f" "$NVIM_CONFIG_DIR/$f"
   done
 
-  # yazi.nvim plugin (only active in terminal neovim, skipped in VSCode)
+  # Terminal-only neovim plugins (skipped in VSCode)
   local NVIM_PLUGINS_DIR="$HOME/.config/nvim/lua/plugins"
   mkdir -p "$NVIM_PLUGINS_DIR"
-  if [[ -f "$SCRIPT_DIR/nvim-config/yazi.lua" ]]; then
-    backup_and_copy "$SCRIPT_DIR/nvim-config/yazi.lua" "$NVIM_PLUGINS_DIR/yazi.lua"
-  fi
+  for plugin in yazi.lua codecompanion.lua; do
+    if [[ -f "$SCRIPT_DIR/nvim-config/$plugin" ]]; then
+      backup_and_copy "$SCRIPT_DIR/nvim-config/$plugin" "$NVIM_PLUGINS_DIR/$plugin"
+    fi
+  done
 }
 
 # ══════════════════════════════════════════════════════════

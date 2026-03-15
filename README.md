@@ -7,11 +7,14 @@
 | | Cursor 模式 | Terminal 模式 |
 |---|---|---|
 | **编辑器** | Cursor + vscode-neovim | Terminal Neovim (LazyVim) |
+| **AI 补全** | Cursor Tab + Copilot | copilot.lua (ghost-text) |
+| **AI Chat** | Cursor Composer | codecompanion.nvim (`<leader>aa`) |
+| **AI Agent** | Cursor Agent | Claude Code CLI (terminal split) |
 | **文件导航** | Cursor 侧边栏 (`<leader>e`) | Yazi 浮窗 (`<leader>e`) / 终端 `y` 命令 |
-| **文件预览** | 无 | Yazi 内置（Markdown/图片/视频/PDF） |
+| **文件预览** | 无 | Yazi 内置（Markdown/图片/视频/PDF, glow 渲染） |
 | **搜索** | VSCode Quick Open | Snacks picker / fzf |
 | **Git** | GitLens + 侧边栏 | LazyGit / fugitive |
-| **适用场景** | 主力开发，需要 AI 辅助（Copilot/Cursor Tab） | 轻量编辑、文件浏览、远程 SSH、知识库阅读 |
+| **适用场景** | 复杂项目开发，需要 `@codebase` 语义搜索 | 快速编辑、AI 重构、远程 SSH、知识库阅读 |
 
 ## 架构
 
@@ -24,7 +27,8 @@ cursor_vscode_config/
 │   ├── lazy.lua            # VSCode 模式只加载 surround，终端加载完整 LazyVim
 │   ├── keymaps.lua         # 80+ 统一快捷键（vim.g.vscode 双分支）
 │   ├── options.lua         # 三端共享选项
-│   └── yazi.lua            # yazi.nvim 插件（仅终端 Neovim 生效）
+│   ├── yazi.lua            # yazi.nvim 插件（仅终端 Neovim 生效）
+│   └── codecompanion.lua   # AI chat + inline edit（Copilot/Claude，仅终端）
 ├── yazi-config/
 │   ├── yazi.toml           # Yazi 主配置（文件管理器行为、opener、预览）
 │   ├── keymap.toml         # Vim-style 快捷键（gc=Cursor, yp=copy path）
