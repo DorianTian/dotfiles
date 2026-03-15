@@ -18,6 +18,11 @@ max_height = 1000
 cache_dir  = ""
 tab_size   = 2
 
+[plugin]
+prepend_previewers = [
+  { name = "*.md", run = "glow" },
+]
+
 [opener]
 edit = [
   { run = 'nvim "$@"', block = true, desc = "Neovim" },

@@ -226,6 +226,13 @@ install_nvim() {
   for f in keymaps.lua lazy.lua options.lua; do
     backup_and_copy "$SCRIPT_DIR/nvim-config/$f" "$NVIM_CONFIG_DIR/$f"
   done
+
+  # yazi.nvim plugin (only active in terminal neovim, skipped in VSCode)
+  local NVIM_PLUGINS_DIR="$HOME/.config/nvim/lua/plugins"
+  mkdir -p "$NVIM_PLUGINS_DIR"
+  if [[ -f "$SCRIPT_DIR/nvim-config/yazi.lua" ]]; then
+    backup_and_copy "$SCRIPT_DIR/nvim-config/yazi.lua" "$NVIM_PLUGINS_DIR/yazi.lua"
+  fi
 }
 
 # ══════════════════════════════════════════════════════════
@@ -237,7 +244,7 @@ install_yazi() {
 
   # Install yazi and preview dependencies
   if command -v brew &>/dev/null; then
-    local yazi_pkgs=("yazi" "ffmpeg" "sevenzip" "poppler")
+    local yazi_pkgs=("yazi" "ffmpeg" "sevenzip" "poppler" "chafa")
     for pkg in "${yazi_pkgs[@]}"; do
       if command -v "$pkg" &>/dev/null || brew list "$pkg" &>/dev/null 2>&1; then
         success "$pkg already installed"
@@ -248,6 +255,14 @@ install_yazi() {
     done
   else
     warn "Homebrew not found. Install manually: brew install yazi ffmpeg sevenzip poppler"
+  fi
+
+  # Install glow for markdown preview
+  if ! command -v glow &>/dev/null; then
+    info "  Installing glow (markdown renderer)..."
+    brew install glow 2>/dev/null || true
+  else
+    success "glow already installed"
   fi
 
   # Copy config files
@@ -261,6 +276,13 @@ install_yazi() {
       warn "$f not found in repo, skipping"
     fi
   done
+
+  # Copy glow plugin for markdown preview
+  if [[ -d "$SCRIPT_DIR/yazi-config/plugins/glow.yazi" ]]; then
+    mkdir -p "$YAZI_CONFIG_DIR/plugins/glow.yazi"
+    cp "$SCRIPT_DIR/yazi-config/plugins/glow.yazi/main.lua" "$YAZI_CONFIG_DIR/plugins/glow.yazi/main.lua"
+    success "glow.yazi plugin"
+  fi
 }
 
 # ══════════════════════════════════════════════════════════
