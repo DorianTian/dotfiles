@@ -21,6 +21,8 @@
   "editor.suggestFontSize": 14,
   "errorLens.fontFamily": "'Victor Mono'",
   "errorLens.fontSize": "13",
+
+  // ══ 主题 & 外观 ══
   "workbench.colorTheme": "Dracula Theme",
   "workbench.iconTheme": "vscode-jetbrains-icon-theme",
   "workbench.productIconTheme": "icons-carbon",
@@ -45,6 +47,7 @@
       ]
     }
   },
+
   // ══ 编辑器体验 ══
   "editor.tabSize": 2,
   "editor.lineNumbers": "relative",
@@ -64,15 +67,15 @@
   "editor.linkedEditing": true,
   "editor.renderWhitespace": "boundary",
   "editor.wordWrap": "off",
-  "editor.rulers": [
-    120
-  ],
+  "editor.rulers": [120],
   "editor.inlayHints.enabled": "onUnlessPressed",
   "editor.inlayHints.fontSize": 12,
   "diffEditor.ignoreTrimWhitespace": false,
+
   // ══ 终端 ══
   "terminal.integrated.cursorBlinking": true,
   "terminal.integrated.cursorStyle": "line",
+
   // ══ Workbench 行为 ══
   "explorer.confirmDelete": false,
   "explorer.confirmDragAndDrop": false,
@@ -84,52 +87,33 @@
   "workbench.list.smoothScrolling": true,
   "workbench.tree.indent": 16,
   "workbench.settings.applyToAllProfiles": [],
+
+  // ══ 全局 Formatter 默认 ══
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false,
+  "prettier.requireConfig": true,
+  "prettier.configPath": "",
+
   // ══ 语言 Formatter ══
-  "[vue]": {
-    "editor.defaultFormatter": "Vue.volar"
-  },
-  "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[javascriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[json]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[jsonc]": {
-    "editor.defaultFormatter": "vscode.json-language-features"
-  },
-  "[html]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[css]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[scss]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[less]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[yaml]": {
-    "editor.defaultFormatter": "redhat.vscode-yaml"
-  },
-  "[sql]": {
-    "editor.defaultFormatter": "cweijan.vscode-database-client2"
-  },
+  "[vue]": { "editor.defaultFormatter": "esbenp.prettier-vscode", "editor.tabSize": 2 },
+  "[typescript]": { "editor.defaultFormatter": "esbenp.prettier-vscode", "editor.tabSize": 2 },
+  "[typescriptreact]": { "editor.defaultFormatter": "esbenp.prettier-vscode", "editor.tabSize": 2 },
+  "[javascript]": { "editor.defaultFormatter": "esbenp.prettier-vscode", "editor.tabSize": 2 },
+  "[javascriptreact]": { "editor.defaultFormatter": "esbenp.prettier-vscode", "editor.tabSize": 2 },
+  "[json]": { "editor.defaultFormatter": "esbenp.prettier-vscode", "editor.tabSize": 2 },
+  "[jsonc]": { "editor.defaultFormatter": "esbenp.prettier-vscode", "editor.tabSize": 2 },
+  "[html]": { "editor.defaultFormatter": "esbenp.prettier-vscode", "editor.tabSize": 2 },
+  "[css]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[scss]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[less]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[yaml]": { "editor.defaultFormatter": "esbenp.prettier-vscode", "editor.tabSize": 2 },
+  "[sql]": { "editor.defaultFormatter": "esbenp.prettier-vscode", "editor.tabSize": 4 },
   "[go]": {
-    "editor.formatOnSave": true,
     "editor.defaultFormatter": "golang.go",
-    "editor.codeActionsOnSave": {
-      "source.organizeImports": "explicit"
-    }
+    "editor.tabSize": 4,
+    "editor.insertSpaces": false,
+    "editor.codeActionsOnSave": { "source.organizeImports": "explicit" }
   },
   "[python]": {
     "editor.defaultFormatter": "charliermarsh.ruff",
@@ -139,47 +123,40 @@
       "source.organizeImports.ruff": "explicit"
     }
   },
-  "[markdown]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.wordWrap": "on"
-  },
+  "[markdown]": { "editor.defaultFormatter": "esbenp.prettier-vscode", "editor.wordWrap": "on" },
+
   // ══ ESLint ══
   "eslint.enable": true,
   "eslint.useFlatConfig": true,
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact",
-    "vue"
-  ],
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact", "vue"],
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit"
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "never"
   },
-  // ══ 文件清理 ══
+
+  // ══ 文件 ══
   "files.eol": "\n",
   "files.trimTrailingWhitespace": true,
   "files.insertFinalNewline": true,
-  "files.associations": {
-    "*.vue": "vue"
-  },
+  "files.associations": { "*.vue": "vue" },
+
   // ══ 语言 & 工具 ══
   "go.formatTool": "goimports",
   "go.toolsManagement.autoUpdate": true,
-  "go.alternateTools": {
-    "dlv": "/opt/homebrew/bin/dlv"
-  },
+  "go.alternateTools": { "dlv": "/opt/homebrew/bin/dlv" },
   "go.lintTool": "golangci-lint",
   "go.lintOnSave": "workspace",
   "javascript.updateImportsOnFileMove.enabled": "always",
   "typescript.updateImportsOnFileMove.enabled": "always",
   "json.schemas": [],
+
   // ══ Git ══
   "git.enableSmartCommit": true,
   "git.autofetch": true,
   "git.openRepositoryInParentFolders": "never",
   "gitlens.graph.layout": "editor",
   "gitlens.codeLens.enabled": false,
+
   // ══ 扩展 ══
   "database-client.autoSync": true,
   "redhat.telemetry.enabled": true,
@@ -188,12 +165,11 @@
   "makefile.configureOnOpen": true,
   "security.promptForLocalFileProtocolHandling": false,
   "keyboard.dispatch": "keyCode",
-  // ══ 代理（按需修改）══
-  // "http.proxy": "http://127.0.0.1:6152",
-  // "http.proxyStrictSSL": false,
+
   // ══ Claude Code ══
   "claudeCode.useTerminal": true,
   "claudeCode.environmentVariables": [],
+
   // ══ VSCode-Neovim ══
   "vscode-neovim.neovimExecutablePaths.darwin": "/opt/homebrew/bin/nvim",
   "extensions.experimental.affinity": {
