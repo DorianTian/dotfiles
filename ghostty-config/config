@@ -1,0 +1,82 @@
+# ============================================
+# Ghostty - Warp-like Experience
+# ============================================
+
+# === 字体 ===
+font-family = JetBrainsMono Nerd Font
+font-size = 16
+font-thicken = true
+
+# 中文回退字体 - 霞鹜文楷等宽
+font-codepoint-map = U+4E00-U+9FFF=LXGW WenKai Mono
+font-codepoint-map = U+3000-U+303F=LXGW WenKai Mono
+font-codepoint-map = U+FF00-U+FFEF=LXGW WenKai Mono
+
+# === 主题 ===
+theme = Dracula
+
+# === 窗口 ===
+window-padding-x = 10
+window-padding-y = 8
+window-decoration = true
+macos-titlebar-style = transparent
+window-theme = ghostty
+background-opacity = 0.85
+background-blur-radius = 20
+
+# 窗口/标签页/分屏 状态持久化（替代 Warp 的 session restore）
+window-save-state = always
+
+# 新标签页/分屏 继承当前工作目录（Warp 默认行为）
+window-inherit-working-directory = true
+tab-inherit-working-directory = true
+split-inherit-working-directory = true
+
+# === 光标 ===
+# bar 更接近 Warp 的 underline 视觉感受
+cursor-style = bar
+cursor-style-blink = true
+shell-integration-features = cursor,sudo,title
+
+# === macOS ===
+# Option 键作为 Alt（zsh/vim 快捷键必需）
+macos-option-as-alt = true
+
+# === 鼠标 ===
+copy-on-select = clipboard
+mouse-hide-while-typing = true
+
+# === 剪贴板 ===
+clipboard-read = allow
+clipboard-write = allow
+clipboard-paste-protection = true
+
+# === Scrollback ===
+# 10MB per surface, 足够日常使用又不会吃太多内存
+scrollback-limit = 10000000
+
+# === 快捷键 ===
+# --- 分屏 (Warp 同款) ---
+# Cmd+D 右分屏, Cmd+Shift+D 下分屏 (Ghostty 默认, 显式声明)
+keybind = super+d=new_split:right
+keybind = super+shift+d=new_split:down
+
+# --- 分屏导航 ---
+# Cmd+Alt+Arrow 切换分屏 (Ghostty 默认)
+# 不覆盖 Cmd+Arrow, 保留给 prompt jump 和行首/行尾
+
+# Cmd+[/] 快速切换前后分屏 (Ghostty 默认)
+# Cmd+Shift+Enter 最大化当前分屏 (Ghostty 默认)
+
+# --- 关闭 ---
+keybind = super+w=close_surface
+
+# --- Quick Terminal (全局下拉终端, Warp 没有但更好用) ---
+keybind = global:super+grave_accent=toggle_quick_terminal
+
+# === 其他 ===
+confirm-close-surface = false
+auto-update = check
+
+# 不自动启动 tmux — 原生 Ghostty 体验更接近 Warp
+# 需要 session 持久化时手动 tmux
