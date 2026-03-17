@@ -13,7 +13,7 @@ font-codepoint-map = U+3000-U+303F=LXGW WenKai Mono TC
 font-codepoint-map = U+FF00-U+FFEF=LXGW WenKai Mono TC
 
 # === 主题 ===
-theme = Dracula
+theme = GitHub Dark Default
 
 # === 窗口 ===
 window-padding-x = 10
@@ -21,7 +21,7 @@ window-padding-y = 8
 window-decoration = true
 macos-titlebar-style = transparent
 window-theme = ghostty
-background-opacity = 0.85
+background-opacity = 0.75
 background-blur-radius = 20
 
 # 窗口/标签页/分屏 状态持久化（替代 Warp 的 session restore）
