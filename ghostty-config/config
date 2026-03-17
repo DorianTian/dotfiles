@@ -32,6 +32,12 @@ window-inherit-working-directory = true
 tab-inherit-working-directory = true
 split-inherit-working-directory = true
 
+# 未聚焦分屏变暗，多分屏时视觉焦点更清晰
+unfocused-split-opacity = 0.7
+
+# 调整分屏大小时不显示尺寸 overlay
+resize-overlay = never
+
 # === 光标 ===
 # bar 更接近 Warp 的 underline 视觉感受
 cursor-style = bar
@@ -41,6 +47,8 @@ shell-integration-features = cursor,sudo,title
 # === macOS ===
 # Option 键作为 Alt（zsh/vim 快捷键必需）
 macos-option-as-alt = true
+# 关闭最后一个窗口后退出 app
+macos-quit-after-last-window-closed = true
 
 # === 鼠标 ===
 copy-on-select = clipboard
@@ -68,11 +76,26 @@ keybind = super+shift+d=new_split:down
 # Cmd+[/] 快速切换前后分屏 (Ghostty 默认)
 # Cmd+Shift+Enter 最大化当前分屏 (Ghostty 默认)
 
+# --- Prompt 跳转（替代 Warp 的 block 导航）---
+# Cmd+Up/Down 在各命令输出块之间跳转，需要 shell integration
+keybind = super+up=scroll_to_prompt:-1
+keybind = super+down=scroll_to_prompt:1
+
+# --- 字体大小 ---
+keybind = super+equal=increase_font_size:1
+keybind = super+minus=decrease_font_size:1
+keybind = super+zero=reset_font_size
+
 # --- 关闭 ---
 keybind = super+w=close_surface
 
 # --- Quick Terminal (全局下拉终端, Warp 没有但更好用) ---
 keybind = global:super+grave_accent=toggle_quick_terminal
+
+# === Quick Terminal ===
+quick-terminal-position = top
+quick-terminal-size = 0.4
+quick-terminal-animation-duration = 0.15
 
 # === 其他 ===
 confirm-close-surface = false
