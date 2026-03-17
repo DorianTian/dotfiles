@@ -332,26 +332,22 @@ install_ghostty() {
 }
 
 # ══════════════════════════════════════════════════════════
-# Module: zsh (Powerlevel10k config)
+# Module: zsh (.zshrc + Powerlevel10k config)
 # ══════════════════════════════════════════════════════════
 install_zsh() {
   echo ""
   info "▶ [zsh] Copying Zsh config..."
 
+  if [[ -f "$SCRIPT_DIR/zsh-config/.zshrc" ]]; then
+    backup_and_copy "$SCRIPT_DIR/zsh-config/.zshrc" "$HOME/.zshrc"
+  else
+    warn "zsh-config/.zshrc not found in repo, skipping"
+  fi
+
   if [[ -f "$SCRIPT_DIR/zsh-config/.p10k.zsh" ]]; then
     backup_and_copy "$SCRIPT_DIR/zsh-config/.p10k.zsh" "$HOME/.p10k.zsh"
   else
     warn "zsh-config/.p10k.zsh not found in repo, skipping"
-  fi
-
-  # 确保 .zshrc 里有 source p10k
-  if [[ -f "$HOME/.zshrc" ]] && ! grep -q "p10k.zsh" "$HOME/.zshrc"; then
-    echo "" >> "$HOME/.zshrc"
-    echo "# Powerlevel10k" >> "$HOME/.zshrc"
-    echo "[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh" >> "$HOME/.zshrc"
-    success "Added p10k source to .zshrc"
-  else
-    success ".zshrc already sources p10k"
   fi
 }
 
