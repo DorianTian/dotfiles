@@ -10,7 +10,22 @@ function M:peek(job)
     :output()
 
   if output and output.status and output.status.success then
-    ya.preview_widget(job, { ui.Text.parse(output.stdout):area(job.area) })
+    -- Split output into lines and apply skip offset
+    local lines = {}
+    for line in output.stdout:gmatch("([^\n]*)\n?") do
+      lines[#lines + 1] = line
+    end
+
+    local skip = job.skip or 0
+    -- Clamp skip to valid range
+    skip = math.max(0, math.min(skip, #lines - 1))
+
+    local visible = {}
+    for i = skip + 1, #lines do
+      visible[#visible + 1] = lines[i]
+    end
+
+    ya.preview_widget(job, { ui.Text.parse(table.concat(visible, "\n")):area(job.area) })
   else
     ya.preview_widget(job, { ui.Text("glow failed"):area(job.area) })
   end
