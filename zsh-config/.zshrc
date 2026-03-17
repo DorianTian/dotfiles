@@ -12,22 +12,12 @@ export EDITOR="nvim"
 export VISUAL="nvim"
 
 # ========== PATH ==========
-export PATH="/Library/TeX/texbin:$PATH"
-export PATH=$PATH:/usr/local/go/bin
-export PATH="/opt/homebrew/opt/postgresql@17/bin:$PATH"
-export PATH="/opt/homebrew/opt/mysql@8.4/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 
 # ========== NVM ==========
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# ========== Proxy ==========
-export http_proxy=http://127.0.0.1:6152
-export https_proxy=http://127.0.0.1:6152
-# export all_proxy=socks5://127.0.0.1:6153
-unset all_proxy
 
 # ========== Oh-My-Zsh ==========
 export ZSH="$HOME/.oh-my-zsh"
@@ -37,22 +27,22 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
 
 plugins=(
-  git                       # git aliases & completions
-  zsh-autosuggestions       # fish-like autosuggestions
-  zsh-syntax-highlighting   # real-time syntax highlighting
-  zsh-completions           # additional completion definitions
+  git                           # git aliases & completions
+  zsh-autosuggestions           # fish-like autosuggestions
+  zsh-syntax-highlighting       # real-time syntax highlighting
+  zsh-completions               # additional completion definitions
   zsh-history-substring-search  # history substring search
-  you-should-use            # reminds you of existing aliases
-  extract                   # extract any archive with `x`
-  z                         # directory jumping via frecency
-  colored-man-pages         # colorful man pages
-  command-not-found         # suggest package when command not found
-  sudo                      # press ESC twice to add sudo
-  copypath                  # copy current path to clipboard
-  copyfile                  # copy file content to clipboard
-  web-search                # search from terminal
-  aliases                   # alias management
-  docker                    # docker completions
+  you-should-use                # reminds you of existing aliases
+  extract                       # extract any archive with `x`
+  z                             # directory jumping via frecency
+  colored-man-pages             # colorful man pages
+  command-not-found             # suggest package when command not found
+  sudo                          # press ESC twice to add sudo
+  copypath                      # copy current path to clipboard
+  copyfile                      # copy file content to clipboard
+  web-search                    # search from terminal
+  aliases                       # alias management
+  docker                        # docker completions
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -198,19 +188,6 @@ function y() {
   rm -f -- "$tmp"
 }
 
-# ========== Codex ==========
-alias codex="nocorrect codex"
-
-# ========== AWS (Ask Dorian) ==========
-export EC2_HOST="13.214.45.162"
-export EC2_KEY="$HOME/Downloads/aix-ops-hub-key.pem"
-export RDS_HOST="ask-dorian-db.cboq4wuogzyb.ap-southeast-1.rds.amazonaws.com"
-
-alias ad-server='ssh -i $EC2_KEY ubuntu@$EC2_HOST'
-alias ad-db='ssh -i $EC2_KEY -t ubuntu@$EC2_HOST "psql \"host=$RDS_HOST port=5432 dbname=ask_dorian user=dorian sslmode=verify-full sslrootcert=/certs/global-bundle.pem\""'
-alias ad-tunnel='ssh -i $EC2_KEY -L 5432:$RDS_HOST:5432 -N ubuntu@$EC2_HOST'
-alias ad-db-local='psql "host=localhost port=5432 dbname=ask_dorian user=dorian sslmode=require"'
-
 # ========== Utility Aliases & Functions ==========
 alias reload='source ~/.zshrc'
 alias cls='clear'
@@ -237,6 +214,3 @@ unset CLAUDECODE
 # ========== Powerlevel10k ==========
 # Theme is loaded by Oh-My-Zsh via ZSH_THEME setting
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-# Added by Antigravity
-export PATH="/Users/tianqiyin/.antigravity/antigravity/bin:$PATH"
