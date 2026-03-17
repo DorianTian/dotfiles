@@ -14,4 +14,7 @@ prepend_keymap = [
   { on = ["y", "n"], run = "copy filename", desc = "Copy filename" },
   # Shell
   { on = ["!"], run = "shell --block --interactive", desc = "Run shell command" },
+  # Preview scrolling
+  { on = "K", run = "seek -5", desc = "Scroll preview up 5 lines" },
+  { on = "J", run = "seek 5",  desc = "Scroll preview down 5 lines" },
 ]
