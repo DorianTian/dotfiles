@@ -10,16 +10,12 @@ function M:peek(job)
     :output()
 
   if output and output.status and output.status.success then
-    -- Split output into lines and apply skip offset
     local lines = {}
     for line in output.stdout:gmatch("([^\n]*)\n?") do
       lines[#lines + 1] = line
     end
 
-    local skip = job.skip or 0
-    -- Clamp skip to valid range
-    skip = math.max(0, math.min(skip, #lines - 1))
-
+    local skip = math.max(0, math.min(job.skip or 0, #lines - 1))
     local visible = {}
     for i = skip + 1, #lines do
       visible[#visible + 1] = lines[i]
@@ -32,8 +28,8 @@ function M:peek(job)
 end
 
 function M:seek(job)
-  local h = cx.active.preview.skip + job.units
-  ya.manager_emit("peek", { math.max(0, h), only_if = job.file.url, upper_bound = true })
+  local new_skip = math.max(0, job.skip + job.units)
+  ya.emit("peek", { new_skip, only_if = job.file.url, upper_bound = true })
 end
 
 return M
