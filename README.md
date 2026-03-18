@@ -63,14 +63,37 @@ cursor_vscode_config/
 ### 方式一：一键脚本
 
 ```bash
-git clone git@github.com:DorianTian/cursor_vscode_config.git
-cd cursor_vscode_config
+git clone git@github.com:DorianTian/cursor_vscode_config.git ~/Desktop/workspace/cursor_vscode_config
+cd ~/Desktop/workspace/cursor_vscode_config
+./install.sh              # Interactive mode — select modules to install
+./install.sh all          # Non-interactive: install everything
+./install.sh --link       # Register CLI command
+```
 
-# Cursor
-./install.sh cursor
+After `--link`, you can use `ide-config` from anywhere:
 
-# VSCode
-./install.sh code
+```bash
+ide-config                # Interactive menu
+ide-config all            # Install everything
+ide-config editor nvim    # Only editor + nvim configs
+ide-config --ide code all # Full install for VSCode
+```
+
+#### New Machine Setup
+
+```bash
+# 1. Clone
+git clone git@github.com:DorianTian/cursor_vscode_config.git ~/Desktop/workspace/cursor_vscode_config
+cd ~/Desktop/workspace/cursor_vscode_config
+
+# 2. Interactive install
+./install.sh
+
+# 3. Register CLI command (optional, select 'l' in interactive menu or:)
+./install.sh --link
+
+# Requires ~/.local/bin in PATH. If not, add to ~/.zshrc:
+#   export PATH="$HOME/.local/bin:$PATH"
 ```
 
 脚本会：安装字体 → 安装扩展 → 备份现有配置 → 复制新配置。
@@ -524,6 +547,13 @@ setup.sh             — One-click local environment setup
 - [Ruff](https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff)
 - [Go](https://marketplace.visualstudio.com/items?itemName=golang.go)
 - [EditorConfig](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig)
+
+## Related Repos
+
+| Repo | CLI Command | Description |
+|------|-------------|-------------|
+| [claude_setting](https://github.com/DorianTian/claude_setting) | `claude-config` | Claude Code runtime config (settings, statusline, CLAUDE.md, iCloud sync) |
+| [skills_repo](https://github.com/DorianTian/skills_repo) | `claude-skills` | Claude Code skills & plugins |
 
 ## License
 
