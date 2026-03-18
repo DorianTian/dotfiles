@@ -2,14 +2,14 @@
 set -euo pipefail
 
 # ══════════════════════════════════════════════════════════
-# Cursor / VSCode + vscode-neovim 模块化配置安装脚本
+# ide-config — Cursor / VSCode + vscode-neovim 模块化配置安装脚本
 #
 # 用法:
-#   ./install.sh                    # 显示可用模块
-#   ./install.sh all                # 全量安装
-#   ./install.sh editor nvim        # 只装指定模块
-#   ./install.sh --ide code all     # 指定 VSCode
-#   ./install.sh --ide cursor editor nvim formatters
+#   ide-config                      # 交互式菜单
+#   ide-config all                  # 全量安装
+#   ide-config editor nvim          # 只装指定模块
+#   ide-config --ide code all       # 指定 VSCode
+#   ide-config --link               # 注册 CLI 命令
 #
 # 可用模块:
 #   fonts       安装字体（Maple Mono, Victor Mono, JetBrains Mono, Nerd Font）
@@ -18,6 +18,8 @@ set -euo pipefail
 #   editor      复制 settings.json + keybindings.json
 #   nvim        复制 keymaps.lua + lazy.lua + options.lua
 #   yazi        安装 Yazi 终端文件管理器 + 复制配置
+#   ghostty     安装 Ghostty 终端 + LXGW WenKai Mono 字体 + 复制配置
+#   zsh         复制 .zshrc + .p10k.zsh
 #   formatters  复制 .prettierrc, .editorconfig, ruff.toml, eslint.config.js
 #   all         以上全部
 # ══════════════════════════════════════════════════════════
@@ -37,12 +39,26 @@ warn()    { echo -e "${YELLOW}[WARN]${NC} $*"; }
 # ── 解析参数 ──
 IDE="cursor"
 MODULES=()
+LINK=false
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --ide)
       IDE="$2"
       shift 2
+      ;;
+    --link)
+      LINK=true
+      shift
+      ;;
+    --help|-h)
+      echo "Usage: ide-config [--ide cursor|code] [--link] <modules...>"
+      echo ""
+      echo "  (none)       Interactive mode"
+      echo "  all          Install everything"
+      echo "  --link       Register CLI command (ide-config)"
+      echo "  --help       Show this help"
+      exit 0
       ;;
     *)
       MODULES+=("$1")
@@ -51,30 +67,55 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-# ── 无参数时显示帮助 ──
-if [[ ${#MODULES[@]} -eq 0 ]]; then
+# ── 无参数时交互式菜单 ──
+if [[ ${#MODULES[@]} -eq 0 && "$LINK" == "false" ]]; then
   echo ""
-  echo "Usage: ./install.sh [--ide cursor|code] <module1> [module2] ..."
+  echo "══════════════════════════════════════════════════════════"
+  echo "  ide-config — IDE Configuration Installer"
+  echo "══════════════════════════════════════════════════════════"
   echo ""
-  echo "Available modules:"
-  echo "  fonts       Install fonts (Maple Mono, Victor Mono, JetBrains Mono, Nerd Font)"
-  echo "  neovim      Install Neovim"
-  echo "  extensions  Install IDE extensions"
-  echo "  editor      Copy settings.json + keybindings.json"
-  echo "  nvim        Copy keymaps.lua + lazy.lua + options.lua"
-  echo "  yazi        Install Yazi file manager + copy config"
-  echo "  ghostty     Install Ghostty terminal + LXGW WenKai Mono font + copy config"
-  echo "  zsh         Copy .p10k.zsh (Powerlevel10k config)"
-  echo "  formatters  Copy .prettierrc, .editorconfig, ruff.toml, eslint.config.js"
-  echo "  all         Install everything"
+  echo "  Select modules to install:"
   echo ""
-  echo "Examples:"
-  echo "  ./install.sh all                    # Full install for Cursor"
-  echo "  ./install.sh editor nvim            # Only editor + nvim configs"
-  echo "  ./install.sh --ide code all         # Full install for VSCode"
-  echo "  ./install.sh formatters             # Only formatting configs"
+  echo "     1) fonts        Maple Mono, Victor Mono, JetBrains Mono, Nerd Font"
+  echo "     2) neovim       Install Neovim"
+  echo "     3) extensions   IDE extensions (Dracula, GitLens, Prettier...)"
+  echo "     4) editor       settings.json + keybindings.json"
+  echo "     5) nvim         keymaps.lua + lazy.lua + options.lua + plugins"
+  echo "     6) yazi         Yazi file manager + config"
+  echo "     7) ghostty      Ghostty terminal + LXGW WenKai font + config"
+  echo "     8) zsh          .zshrc + .p10k.zsh"
+  echo "     9) formatters   .prettierrc, .editorconfig, ruff.toml, eslint"
   echo ""
-  exit 0
+  echo "     a) All modules"
+  echo "     l) Register CLI command (ide-config)"
+  echo "     f) Full setup (all + CLI)"
+  echo ""
+  printf "  IDE [cursor/code] (default: cursor): "
+  read -r ide_choice
+  [[ -n "$ide_choice" ]] && IDE="$ide_choice"
+  echo ""
+  printf "  Enter choices (e.g. 4 5 9, or a for all): "
+  read -r choices
+
+  ALL_MODULES=(fonts neovim extensions editor nvim yazi ghostty zsh formatters)
+  for choice in $choices; do
+    case "$choice" in
+      1) MODULES+=(fonts) ;;
+      2) MODULES+=(neovim) ;;
+      3) MODULES+=(extensions) ;;
+      4) MODULES+=(editor) ;;
+      5) MODULES+=(nvim) ;;
+      6) MODULES+=(yazi) ;;
+      7) MODULES+=(ghostty) ;;
+      8) MODULES+=(zsh) ;;
+      9) MODULES+=(formatters) ;;
+      a) MODULES=("${ALL_MODULES[@]}") ;;
+      l) LINK=true ;;
+      f) MODULES=("${ALL_MODULES[@]}"); LINK=true ;;
+      *) echo "  ⚠ Unknown option: $choice" ;;
+    esac
+  done
+  echo ""
 fi
 
 # ── 展开 all ──
@@ -400,10 +441,26 @@ for mod in "${MODULES[@]}"; do
   esac
 done
 
+# ── Register CLI command ──
+if [[ "$LINK" == "true" ]]; then
+  echo ""
+  info "▶ Registering CLI command..."
+  mkdir -p "$HOME/.local/bin"
+  ln -sf "$SCRIPT_DIR/install.sh" "$HOME/.local/bin/ide-config"
+  success "ide-config → $SCRIPT_DIR/install.sh"
+  if [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
+    warn "~/.local/bin is not in PATH. Add to ~/.zshrc:"
+    echo "    export PATH=\"\$HOME/.local/bin:\$PATH\""
+  fi
+fi
+
 # ── 完成 ──
 echo ""
 echo "══════════════════════════════════════════════════════════"
-success "Done! Installed modules: ${MODULES[*]}"
+if [[ ${#MODULES[@]} -gt 0 ]]; then
+  success "Done! Installed modules: ${MODULES[*]}"
+fi
+[[ "$LINK" == "true" ]] && success "CLI registered: ide-config"
 echo ""
 echo "  Notes:"
 echo "    - Restart $IDE to apply changes"
