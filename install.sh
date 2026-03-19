@@ -280,6 +280,13 @@ install_nvim() {
       backup_and_copy "$SCRIPT_DIR/nvim-config/$plugin" "$NVIM_PLUGINS_DIR/$plugin"
     fi
   done
+
+  # Ghostty-synced colorscheme (reads Ghostty theme palette for Neovim highlights)
+  local NVIM_COLORS_DIR="$HOME/.config/nvim/colors"
+  mkdir -p "$NVIM_COLORS_DIR"
+  if [[ -f "$SCRIPT_DIR/nvim-config/colors/ghostty.lua" ]]; then
+    backup_and_copy "$SCRIPT_DIR/nvim-config/colors/ghostty.lua" "$NVIM_COLORS_DIR/ghostty.lua"
+  fi
 }
 
 # ══════════════════════════════════════════════════════════

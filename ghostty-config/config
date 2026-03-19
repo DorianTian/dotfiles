@@ -8,12 +8,12 @@ font-size = 16
 font-thicken = true
 
 # 中文回退字体 - 霞鹜文楷等宽
-font-codepoint-map = U+4E00-U+9FFF=LXGW WenKai Mono TC
-font-codepoint-map = U+3000-U+303F=LXGW WenKai Mono TC
-font-codepoint-map = U+FF00-U+FFEF=LXGW WenKai Mono TC
+font-codepoint-map = U+4E00-U+9FFF=LXGW WenKai Mono
+font-codepoint-map = U+3000-U+303F=LXGW WenKai Mono
+font-codepoint-map = U+FF00-U+FFEF=LXGW WenKai Mono
 
 # === 主题 ===
-theme = GitHub Dark Default
+theme = Apple System Colors Light
 
 # === 窗口 ===
 window-padding-x = 10
@@ -21,7 +21,7 @@ window-padding-y = 8
 window-decoration = true
 macos-titlebar-style = transparent
 window-theme = ghostty
-background-opacity = 0.75
+background-opacity = 0.92
 background-blur-radius = 20
 
 # 窗口/标签页/分屏 状态持久化（替代 Warp 的 session restore）
@@ -78,9 +78,6 @@ keybind = super+shift+d=new_split:down
 
 # --- Prompt 跳转（Ghostty 默认绑定：Cmd+Arrow Up/Down = jump_to_prompt）---
 # --- 字体大小（Ghostty 默认绑定：Cmd+= / Cmd+- / Cmd+0）---
-
-# --- 复制粘贴 (修复 Claude Code TUI 中 Cmd+V 失效) ---
-keybind = super+v=paste_from_clipboard
 
 # --- 关闭 ---
 keybind = super+w=close_surface
