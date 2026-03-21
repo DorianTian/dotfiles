@@ -2,31 +2,34 @@
 set -euo pipefail
 
 # ══════════════════════════════════════════════════════════
-# ide-config — Cursor / VSCode + vscode-neovim 模块化配置安装脚本
+# dotfiles — Symlink-based Configuration Installer
 #
-# 用法:
-#   ide-config                      # 交互式菜单
-#   ide-config all                  # 全量安装
-#   ide-config editor nvim          # 只装指定模块
-#   ide-config --ide code all       # 指定 VSCode
-#   ide-config --link               # 注册 CLI 命令
+# Usage:
+#   dotfiles                        # Interactive menu
+#   dotfiles all                    # Full setup
+#   dotfiles nvim ghostty zsh       # Specific modules
+#   dotfiles --ide code all         # Use VSCode instead of Cursor
+#   dotfiles --link                 # Register CLI command
 #
-# 可用模块:
-#   fonts       安装字体（Maple Mono, Victor Mono, JetBrains Mono, Nerd Font）
-#   neovim      安装 Neovim
-#   extensions  安装 IDE 扩展（Dracula, GitLens, Prettier, ESLint...）
-#   editor      复制 settings.json + keybindings.json
-#   nvim        复制 keymaps.lua + lazy.lua + options.lua
-#   yazi        安装 Yazi 终端文件管理器 + 复制配置
-#   ghostty     安装 Ghostty 终端 + 字体 (JetBrains Mono NF, LXGW WenKai) + 主题 + 配置
-#   zsh         复制 .zshrc + .p10k.zsh
-#   formatters  复制 .prettierrc, .editorconfig, ruff.toml, eslint.config.js
-#   all         以上全部
+# Modules:
+#   fonts       Install fonts (Maple Mono, Victor Mono, JetBrains Mono, Nerd Font)
+#   neovim      Install Neovim
+#   extensions  Install IDE extensions (Dracula, GitLens, Prettier, ESLint...)
+#   editor      Cursor/VSCode settings.json + keybindings.json
+#   nvim        Neovim config (keymaps, lazy, options, plugins, colors)
+#   yazi        Yazi terminal file manager + config
+#   ghostty     Ghostty terminal + fonts + theme + config
+#   zsh         .zshrc + .p10k.zsh + .zshrc.local template
+#   formatters  .prettierrc, .editorconfig, ruff.toml, eslint.config.js
+#   all         All modules
+#
+# All config files are SYMLINKED to this repo (not copied).
+# Edit files in this repo → changes apply everywhere instantly.
 # ══════════════════════════════════════════════════════════
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
-# ── 颜色 ──
+# ── Colors ──
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
@@ -36,42 +39,31 @@ info()    { echo -e "${BLUE}[INFO]${NC} $*"; }
 success() { echo -e "${GREEN}[OK]${NC}   $*"; }
 warn()    { echo -e "${YELLOW}[WARN]${NC} $*"; }
 
-# ── 解析参数 ──
+# ── Parse args ──
 IDE="cursor"
 MODULES=()
 LINK=false
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --ide)
-      IDE="$2"
-      shift 2
-      ;;
-    --link)
-      LINK=true
-      shift
-      ;;
+    --ide)  IDE="$2"; shift 2 ;;
+    --link) LINK=true; shift ;;
     --help|-h)
-      echo "Usage: ide-config [--ide cursor|code] [--link] <modules...>"
-      echo ""
-      echo "  (none)       Interactive mode"
-      echo "  all          Install everything"
-      echo "  --link       Register CLI command (ide-config)"
-      echo "  --help       Show this help"
+      echo "Usage: dotfiles [--ide cursor|code] [--link] <modules...>"
+      echo "  (none)    Interactive mode"
+      echo "  all       Install everything"
+      echo "  --link    Register CLI command (dotfiles)"
       exit 0
       ;;
-    *)
-      MODULES+=("$1")
-      shift
-      ;;
+    *) MODULES+=("$1"); shift ;;
   esac
 done
 
-# ── 无参数时交互式菜单 ──
+# ── Interactive menu ──
 if [[ ${#MODULES[@]} -eq 0 && "$LINK" == "false" ]]; then
   echo ""
   echo "══════════════════════════════════════════════════════════"
-  echo "  ide-config — IDE Configuration Installer"
+  echo "  dotfiles — Symlink-based Configuration Installer"
   echo "══════════════════════════════════════════════════════════"
   echo ""
   echo "  Select modules to install:"
@@ -87,7 +79,7 @@ if [[ ${#MODULES[@]} -eq 0 && "$LINK" == "false" ]]; then
   echo "     9) formatters   .prettierrc, .editorconfig, ruff.toml, eslint"
   echo ""
   echo "     a) All modules"
-  echo "     l) Register CLI command (ide-config)"
+  echo "     l) Register CLI command (dotfiles)"
   echo "     f) Full setup (all + CLI)"
   echo ""
   printf "  IDE [cursor/code] (default: cursor): "
@@ -118,12 +110,12 @@ if [[ ${#MODULES[@]} -eq 0 && "$LINK" == "false" ]]; then
   echo ""
 fi
 
-# ── 展开 all ──
+# ── Expand all ──
 if [[ " ${MODULES[*]} " == *" all "* ]]; then
   MODULES=(fonts neovim extensions editor nvim yazi ghostty zsh formatters)
 fi
 
-# ── 检测平台 & 路径 ──
+# ── Platform & paths ──
 OS="$(uname -s)"
 case "$OS" in
   Darwin)
@@ -158,18 +150,39 @@ echo "  IDE:     $IDE | Platform: $OS"
 echo "  Modules: ${MODULES[*]}"
 echo "══════════════════════════════════════════════════════════"
 
-# ── 备份工具函数 ──
-backup_and_copy() {
+# ── Symlink utility ──
+# Back up existing file (if not already a symlink), then create symlink
+backup_and_link() {
   local src="$1"
   local dst="$2"
   local name="$(basename "$dst")"
 
-  if [[ -f "$dst" ]]; then
-    cp "$dst" "${dst}.bak"
+  if [[ -e "$dst" && ! -L "$dst" ]]; then
+    mv "$dst" "${dst}.bak"
     success "Backed up $name → ${name}.bak"
+  elif [[ -L "$dst" ]]; then
+    rm "$dst"
   fi
-  cp "$src" "$dst"
-  success "$name"
+
+  ln -sf "$src" "$dst"
+  success "$name → $(basename "$(dirname "$src")")/$(basename "$src")"
+}
+
+# Symlink a directory (back up existing dir if not already a symlink)
+link_dir() {
+  local src="$1"
+  local dst="$2"
+  local name="$(basename "$dst")"
+
+  if [[ -d "$dst" && ! -L "$dst" ]]; then
+    mv "$dst" "${dst}.bak"
+    success "Backed up $name/ → ${name}.bak/"
+  elif [[ -L "$dst" ]]; then
+    rm "$dst"
+  fi
+
+  ln -sf "$src" "$dst"
+  success "$name/ → $(basename "$(dirname "$src")")/$(basename "$src")"
 }
 
 # ══════════════════════════════════════════════════════════
@@ -251,41 +264,42 @@ install_extensions() {
 # ══════════════════════════════════════════════════════════
 install_editor() {
   echo ""
-  info "▶ [editor] Copying Cursor/VSCode config..."
+  info "▶ [editor] Symlinking Cursor/VSCode config..."
   mkdir -p "$SETTINGS_DIR"
 
-  backup_and_copy "$SCRIPT_DIR/cursor-config/settings.json" "$SETTINGS_DIR/settings.json"
-  backup_and_copy "$SCRIPT_DIR/cursor-config/keybindings.json" "$SETTINGS_DIR/keybindings.json"
+  backup_and_link "$SCRIPT_DIR/cursor-config/settings.json" "$SETTINGS_DIR/settings.json"
+  backup_and_link "$SCRIPT_DIR/cursor-config/keybindings.json" "$SETTINGS_DIR/keybindings.json"
 }
 
 # ══════════════════════════════════════════════════════════
-# Module: nvim (keymaps.lua + lazy.lua + options.lua)
+# Module: nvim (config + plugins + colors)
 # ══════════════════════════════════════════════════════════
 install_nvim() {
   echo ""
-  info "▶ [nvim] Copying Neovim config..."
+  info "▶ [nvim] Symlinking Neovim config..."
   mkdir -p "$NVIM_CONFIG_DIR"
 
+  # Config files → ~/.config/nvim/lua/config/
   for f in keymaps.lua lazy.lua options.lua autocmds.lua; do
     if [[ -f "$SCRIPT_DIR/nvim-config/$f" ]]; then
-      backup_and_copy "$SCRIPT_DIR/nvim-config/$f" "$NVIM_CONFIG_DIR/$f"
+      backup_and_link "$SCRIPT_DIR/nvim-config/$f" "$NVIM_CONFIG_DIR/$f"
     fi
   done
 
-  # Terminal-only neovim plugins (skipped in VSCode)
+  # Plugin files → ~/.config/nvim/lua/plugins/
   local NVIM_PLUGINS_DIR="$HOME/.config/nvim/lua/plugins"
   mkdir -p "$NVIM_PLUGINS_DIR"
   for plugin in ui.lua neo-tree.lua yazi.lua coding.lua formatting.lua git.lua go.lua vim-be-good.lua; do
     if [[ -f "$SCRIPT_DIR/nvim-config/$plugin" ]]; then
-      backup_and_copy "$SCRIPT_DIR/nvim-config/$plugin" "$NVIM_PLUGINS_DIR/$plugin"
+      backup_and_link "$SCRIPT_DIR/nvim-config/$plugin" "$NVIM_PLUGINS_DIR/$plugin"
     fi
   done
 
-  # Ghostty-synced colorscheme (reads Ghostty theme palette for Neovim highlights)
+  # Colorscheme → ~/.config/nvim/colors/
   local NVIM_COLORS_DIR="$HOME/.config/nvim/colors"
   mkdir -p "$NVIM_COLORS_DIR"
   if [[ -f "$SCRIPT_DIR/nvim-config/colors/ghostty.lua" ]]; then
-    backup_and_copy "$SCRIPT_DIR/nvim-config/colors/ghostty.lua" "$NVIM_COLORS_DIR/ghostty.lua"
+    backup_and_link "$SCRIPT_DIR/nvim-config/colors/ghostty.lua" "$NVIM_COLORS_DIR/ghostty.lua"
   fi
 }
 
@@ -319,23 +333,21 @@ install_yazi() {
     success "glow already installed"
   fi
 
-  # Copy config files
+  # Symlink config files
   local YAZI_CONFIG_DIR="$HOME/.config/yazi"
   mkdir -p "$YAZI_CONFIG_DIR"
 
   for f in yazi.toml keymap.toml theme.toml; do
     if [[ -f "$SCRIPT_DIR/yazi-config/$f" ]]; then
-      backup_and_copy "$SCRIPT_DIR/yazi-config/$f" "$YAZI_CONFIG_DIR/$f"
+      backup_and_link "$SCRIPT_DIR/yazi-config/$f" "$YAZI_CONFIG_DIR/$f"
     else
       warn "$f not found in repo, skipping"
     fi
   done
 
-  # Copy glow plugin for markdown preview
-  if [[ -d "$SCRIPT_DIR/yazi-config/plugins/glow.yazi" ]]; then
-    mkdir -p "$YAZI_CONFIG_DIR/plugins/glow.yazi"
-    cp "$SCRIPT_DIR/yazi-config/plugins/glow.yazi/main.lua" "$YAZI_CONFIG_DIR/plugins/glow.yazi/main.lua"
-    success "glow.yazi plugin"
+  # Symlink plugins directory
+  if [[ -d "$SCRIPT_DIR/yazi-config/plugins" ]]; then
+    link_dir "$SCRIPT_DIR/yazi-config/plugins" "$YAZI_CONFIG_DIR/plugins"
   fi
 }
 
@@ -375,38 +387,72 @@ install_ghostty() {
     echo "    - LXGW WenKai: https://github.com/lxgw/LxgwWenKai"
   fi
 
-  # Copy config + custom themes
+  # Symlink config + themes
   local GHOSTTY_CONFIG_DIR="$HOME/.config/ghostty"
   mkdir -p "$GHOSTTY_CONFIG_DIR"
 
   if [[ -f "$SCRIPT_DIR/ghostty-config/config" ]]; then
-    backup_and_copy "$SCRIPT_DIR/ghostty-config/config" "$GHOSTTY_CONFIG_DIR/config"
+    backup_and_link "$SCRIPT_DIR/ghostty-config/config" "$GHOSTTY_CONFIG_DIR/config"
   else
     warn "ghostty-config/config not found in repo, skipping"
   fi
 
   if [[ -d "$SCRIPT_DIR/ghostty-config/themes" ]]; then
-    mkdir -p "$GHOSTTY_CONFIG_DIR/themes"
-    cp "$SCRIPT_DIR/ghostty-config/themes/"* "$GHOSTTY_CONFIG_DIR/themes/"
-    success "Custom themes copied"
+    link_dir "$SCRIPT_DIR/ghostty-config/themes" "$GHOSTTY_CONFIG_DIR/themes"
   fi
 }
 
 # ══════════════════════════════════════════════════════════
-# Module: zsh (.zshrc + Powerlevel10k config)
+# Module: zsh (.zshrc + .p10k.zsh + .zshrc.local)
 # ══════════════════════════════════════════════════════════
 install_zsh() {
   echo ""
-  info "▶ [zsh] Copying Zsh config..."
+  info "▶ [zsh] Setting up Zsh config..."
 
+  # Generate .zshrc.local from existing .zshrc (if needed)
+  if [[ ! -f "$HOME/.zshrc.local" ]]; then
+    if [[ -f "$HOME/.zshrc" && ! -L "$HOME/.zshrc" ]]; then
+      # Extract machine-specific lines from existing .zshrc
+      info "  Extracting machine-specific config to ~/.zshrc.local..."
+      {
+        echo "# ========== Machine-specific Config =========="
+        echo "# Auto-extracted from .zshrc during dotfiles setup."
+        echo "# Edit this file for machine-specific PATH, proxy, credentials."
+        echo ""
+        # Extract PATH entries (except common ones)
+        grep -E '^export PATH=.*(TeX|go/bin|postgresql|mysql|antigravity)' "$HOME/.zshrc" 2>/dev/null || true
+        echo ""
+        # Extract proxy settings
+        sed -n '/^# ========== Proxy/,/^$/p' "$HOME/.zshrc" 2>/dev/null || true
+        echo ""
+        # Extract project-specific aliases (AWS, etc.)
+        sed -n '/^# ========== AWS/,/^$/p' "$HOME/.zshrc" 2>/dev/null || true
+        # Antigravity
+        grep -E 'antigravity' "$HOME/.zshrc" 2>/dev/null | grep -v '^#' || true
+      } > "$HOME/.zshrc.local"
+      success "~/.zshrc.local created (extracted from existing .zshrc)"
+      warn "  ⚠ VERIFY: Review ~/.zshrc.local to ensure all PATH/proxy settings are correct"
+      warn "  ⚠ BACKUP: Old .zshrc saved as ~/.zshrc.bak — check if anything was missed"
+    else
+      # New machine — copy template
+      cp "$SCRIPT_DIR/zsh-config/.zshrc.local.template" "$HOME/.zshrc.local"
+      success "~/.zshrc.local created from template"
+      warn "  ⚠ ACTION REQUIRED: Edit ~/.zshrc.local with your machine-specific PATH/proxy"
+    fi
+  else
+    success "~/.zshrc.local already exists, keeping as-is"
+  fi
+
+  # Symlink .zshrc
   if [[ -f "$SCRIPT_DIR/zsh-config/.zshrc" ]]; then
-    backup_and_copy "$SCRIPT_DIR/zsh-config/.zshrc" "$HOME/.zshrc"
+    backup_and_link "$SCRIPT_DIR/zsh-config/.zshrc" "$HOME/.zshrc"
   else
     warn "zsh-config/.zshrc not found in repo, skipping"
   fi
 
+  # Symlink .p10k.zsh
   if [[ -f "$SCRIPT_DIR/zsh-config/.p10k.zsh" ]]; then
-    backup_and_copy "$SCRIPT_DIR/zsh-config/.p10k.zsh" "$HOME/.p10k.zsh"
+    backup_and_link "$SCRIPT_DIR/zsh-config/.p10k.zsh" "$HOME/.p10k.zsh"
   else
     warn "zsh-config/.p10k.zsh not found in repo, skipping"
   fi
@@ -417,19 +463,19 @@ install_zsh() {
 # ══════════════════════════════════════════════════════════
 install_formatters() {
   echo ""
-  info "▶ [formatters] Copying formatting configs..."
+  info "▶ [formatters] Symlinking formatting configs..."
 
-  # 全局配置文件 → $HOME
+  # Global config files → $HOME
   local global_files=(".prettierrc" ".editorconfig" "ruff.toml")
   for f in "${global_files[@]}"; do
     if [[ -f "$SCRIPT_DIR/$f" ]]; then
-      backup_and_copy "$SCRIPT_DIR/$f" "$HOME/$f"
+      backup_and_link "$SCRIPT_DIR/$f" "$HOME/$f"
     else
       warn "$f not found in repo, skipping"
     fi
   done
 
-  # eslint.config.js → 提示用户按项目复制
+  # eslint.config.js — per-project, just show path
   if [[ -f "$SCRIPT_DIR/eslint.config.js" ]]; then
     success "eslint.config.js available at: $SCRIPT_DIR/eslint.config.js"
     info "  Copy to your project: cp $SCRIPT_DIR/eslint.config.js <project-dir>/"
@@ -437,12 +483,12 @@ install_formatters() {
 
   # sql-formatter.json
   if [[ -f "$SCRIPT_DIR/sql-formatter.json" ]]; then
-    backup_and_copy "$SCRIPT_DIR/sql-formatter.json" "$HOME/sql-formatter.json"
+    backup_and_link "$SCRIPT_DIR/sql-formatter.json" "$HOME/sql-formatter.json"
   fi
 }
 
 # ══════════════════════════════════════════════════════════
-# 执行选中的模块
+# Execute selected modules
 # ══════════════════════════════════════════════════════════
 for mod in "${MODULES[@]}"; do
   case "$mod" in
@@ -456,7 +502,7 @@ for mod in "${MODULES[@]}"; do
     zsh)        install_zsh ;;
     formatters) install_formatters ;;
     *)
-      warn "Unknown module: $mod (available: fonts neovim extensions editor nvim yazi formatters all)"
+      warn "Unknown module: $mod (available: fonts neovim extensions editor nvim yazi ghostty zsh formatters all)"
       ;;
   esac
 done
@@ -466,25 +512,26 @@ if [[ "$LINK" == "true" ]]; then
   echo ""
   info "▶ Registering CLI command..."
   mkdir -p "$HOME/.local/bin"
-  ln -sf "$SCRIPT_DIR/install.sh" "$HOME/.local/bin/ide-config"
-  success "ide-config → $SCRIPT_DIR/install.sh"
+  ln -sf "$SCRIPT_DIR/install.sh" "$HOME/.local/bin/dotfiles"
+  success "dotfiles → $SCRIPT_DIR/install.sh"
   if [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
-    warn "~/.local/bin is not in PATH. Add to ~/.zshrc:"
+    warn "~/.local/bin is not in PATH. Add to ~/.zshrc.local:"
     echo "    export PATH=\"\$HOME/.local/bin:\$PATH\""
   fi
 fi
 
-# ── 完成 ──
+# ── Done ──
 echo ""
 echo "══════════════════════════════════════════════════════════"
 if [[ ${#MODULES[@]} -gt 0 ]]; then
-  success "Done! Installed modules: ${MODULES[*]}"
+  success "Done! Symlinked modules: ${MODULES[*]}"
 fi
-[[ "$LINK" == "true" ]] && success "CLI registered: ide-config"
+[[ "$LINK" == "true" ]] && success "CLI registered: dotfiles"
 echo ""
 echo "  Notes:"
-echo "    - Restart $IDE to apply changes"
-echo "    - settings.json: uncomment http.proxy if needed"
-echo "    - Run 'which nvim' to verify neovim path in settings"
+echo "    - All configs are symlinked to: $SCRIPT_DIR"
+echo "    - Edit files in the repo → changes apply instantly"
+echo "    - Machine-specific config: ~/.zshrc.local"
+echo "    - Restart apps to apply changes"
 echo "══════════════════════════════════════════════════════════"
 echo ""

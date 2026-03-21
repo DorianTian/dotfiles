@@ -146,8 +146,7 @@ if vim.g.vscode then
   -- ══════════════════════════════════════════════════════════
   -- Buffer（<leader>b 组 + H/L/[b/]b）
   -- ══════════════════════════════════════════════════════════
-  map("n", "H", function() notify("workbench.action.previousEditor") end, { desc = "Prev buffer" })
-  map("n", "L", function() notify("workbench.action.nextEditor") end, { desc = "Next buffer" })
+  -- H/L 已映射为行首/行尾（原生 Neovim 区），buffer 切换用 [b/]b
   map("n", "[b", function() notify("workbench.action.previousEditor") end, { desc = "Prev buffer" })
   map("n", "]b", function() notify("workbench.action.nextEditor") end, { desc = "Next buffer" })
   map("n", "<leader>bd", function() notify("workbench.action.closeActiveEditor") end, { desc = "Close buffer" })
@@ -257,6 +256,10 @@ else
   -- ════════════════════════════════════════════════════════
   -- 原生 Neovim 环境
   -- ════════════════════════════════════════════════════════
+  -- 覆盖 LazyVim 默认的 H/L buffer 切换，映射为行首/行尾
+  map({ "n", "v", "o" }, "H", "^", { desc = "Go to first non-blank character" })
+  map({ "n", "v", "o" }, "L", "$", { desc = "Go to end of line" })
+
   map({ "n", "i", "v" }, "<C-s>", "<cmd>w<cr><esc>", { desc = "Save file" })
 
   map("n", "<A-j>", "<cmd>m .+1<cr>==", { desc = "Move line down" })

@@ -1,0 +1,18 @@
+# ========== Machine-specific Config ==========
+# Copy this file to ~/.zshrc.local and fill in your machine-specific settings.
+# This file is NOT tracked by dotfiles repo.
+
+# ========== PATH ==========
+# Uncomment and adjust as needed:
+# export PATH="/Library/TeX/texbin:$PATH"
+# export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
+# export PATH="/opt/homebrew/opt/postgresql@17/bin:$PATH"
+# export PATH="/opt/homebrew/opt/mysql@8.4/bin:$PATH"
+
+# ========== Proxy ==========
+# export http_proxy=http://127.0.0.1:6152
+# export https_proxy=http://127.0.0.1:6152
+# export all_proxy=socks5://127.0.0.1:6153
+
+# ========== Project Aliases ==========
+# Add project-specific SSH aliases, DB connections, etc.

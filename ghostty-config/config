@@ -18,8 +18,6 @@ font-codepoint-map = U+3100-U+312F=LXGW WenKai Mono
 font-codepoint-map = U+FE30-U+FE4F=LXGW WenKai Mono
 
 # === 主题 ===
-# Friday — 基于 Modus Operandi 的 CVD 适配版（色弱友好）
-# 主题文件：themes/Friday
 theme = Friday
 
 # === 窗口 ===

@@ -5,6 +5,10 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# ========== Machine-specific Config ==========
+# PATH, proxy, credentials, project aliases — per machine
+[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
+
 # ========== Environment Variables ==========
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
@@ -149,7 +153,6 @@ export GIT_PAGER="delta"
 
 # zoxide (cd replacement)
 eval "$(zoxide init zsh)"
-alias cd='z'
 
 # grep
 alias grep='grep --color=auto'
@@ -177,6 +180,7 @@ alias gsp='git stash pop'
 alias v="nvim"
 alias vi="nvim"
 
+
 # ========== Yazi (terminal file manager) ==========
 # Wrapper: quit yazi → auto cd to the directory you navigated to
 function y() {
@@ -187,6 +191,9 @@ function y() {
   fi
   rm -f -- "$tmp"
 }
+
+# ========== Codex ==========
+alias codex="nocorrect codex"
 
 # ========== Utility Aliases & Functions ==========
 alias reload='source ~/.zshrc'
@@ -214,3 +221,15 @@ unset CLAUDECODE
 # ========== Powerlevel10k ==========
 # Theme is loaded by Oh-My-Zsh via ZSH_THEME setting
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# ========== Vim Tip of the Day ==========
+# Use precmd hook to show tip after zsh is fully loaded (avoids p10k instant prompt warning)
+_show_vim_tip() {
+  local tips="$(dirname "$(readlink ~/.zshrc 2>/dev/null || echo ~/.zshrc)")/vim-tips.txt"
+  if [[ -f "$tips" ]]; then
+    echo "\033[0;36m💡 Vim tip:\033[0m $(awk 'BEGIN{srand()}{a[NR]=$0}END{print a[int(rand()*NR)+1]}' "$tips")"
+  fi
+  add-zsh-hook -d precmd _show_vim_tip
+}
+autoload -Uz add-zsh-hook
+add-zsh-hook precmd _show_vim_tip
