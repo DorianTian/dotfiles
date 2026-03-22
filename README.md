@@ -63,8 +63,8 @@ cursor_vscode_config/
 ### 方式一：一键脚本
 
 ```bash
-git clone git@github.com:DorianTian/cursor_vscode_config.git ~/Desktop/workspace/cursor_vscode_config
-cd ~/Desktop/workspace/cursor_vscode_config
+git clone git@github.com:DorianTian/cursor_vscode_config.git ~/dev-env/dotfiles
+cd ~/dev-env/dotfiles
 ./install.sh              # Interactive mode — select modules to install
 ./install.sh all          # Non-interactive: install everything
 ./install.sh --link       # Register CLI command
@@ -83,8 +83,8 @@ ide-config --ide code all # Full install for VSCode
 
 ```bash
 # 1. Clone
-git clone git@github.com:DorianTian/cursor_vscode_config.git ~/Desktop/workspace/cursor_vscode_config
-cd ~/Desktop/workspace/cursor_vscode_config
+git clone git@github.com:DorianTian/cursor_vscode_config.git ~/dev-env/dotfiles
+cd ~/dev-env/dotfiles
 
 # 2. Interactive install
 ./install.sh
