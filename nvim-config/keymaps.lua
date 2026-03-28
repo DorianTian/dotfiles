@@ -72,8 +72,8 @@ if vim.g.vscode then
   map("n", "[w", function() notify("editor.action.marker.prev") end, { desc = "Prev warning" })
 
   -- ── 符号/函数导航 ──
-  -- [f/]f (treesitter function jump) 在 VSCode 中无等价命令，已移除
-  -- 替代方案：<leader>ss → workbench.action.gotoSymbol（当前文件所有 symbol 列表）
+  -- [f/]f, af/if, aa/ia 等由 treesitter-textobjects + mini.ai 提供（lazy.lua vscode 分支已加载）
+  -- <leader>ss → workbench.action.gotoSymbol（当前文件所有 symbol 列表）
 
   -- ══════════════════════════════════════════════════════════
   -- Code（<leader>c 组）

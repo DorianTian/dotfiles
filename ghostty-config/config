@@ -65,8 +65,8 @@ clipboard-write = allow
 clipboard-paste-protection = true
 
 # === Scrollback ===
-# 10MB per surface, 足够日常使用又不会吃太多内存
-scrollback-limit = 10000000
+# 10 万行 per surface，日常足够翻，不会吃太多内存
+scrollback-limit = 100000
 
 # === 快捷键 ===
 # --- 分屏 (Warp 同款) ---
