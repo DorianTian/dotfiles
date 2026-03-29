@@ -89,6 +89,30 @@
     },
 
     // ══════════════════════════════════════════════════════════
+    // Ctrl+D/U 半页滚动：normal/visual mode 显式发给 neovim
+    // ══════════════════════════════════════════════════════════
+    {
+        "key": "ctrl+d",
+        "command": "-editor.action.addSelectionToNextFindMatch"
+    },
+    {
+        "key": "ctrl+d",
+        "command": "vscode-neovim.send",
+        "args": "<C-d>",
+        "when": "editorTextFocus && neovim.init && neovim.mode != 'insert'"
+    },
+    {
+        "key": "ctrl+u",
+        "command": "-editor.action.cursorUndo"
+    },
+    {
+        "key": "ctrl+u",
+        "command": "vscode-neovim.send",
+        "args": "<C-u>",
+        "when": "editorTextFocus && neovim.init && neovim.mode != 'insert'"
+    },
+
+    // ══════════════════════════════════════════════════════════
     // Alt+j/k 移动行（macOS Alt 产生死键，必须在这里绑定）
     // ══════════════════════════════════════════════════════════
     {
