@@ -27,6 +27,10 @@ if vim.g.vscode then
     end
   end
 
+  -- ── H/L 行首行尾（与原生 Neovim 分支一致）──
+  map({ "n", "v", "o" }, "H", "^", { desc = "Go to first non-blank character" })
+  map({ "n", "v", "o" }, "L", "$", { desc = "Go to end of line" })
+
   -- ── 行移动（<A-j/k>）──
   map("n", "<A-j>", function() notify("editor.action.moveLinesDownAction") end, { desc = "Move line down" })
   map("n", "<A-k>", function() notify("editor.action.moveLinesUpAction") end, { desc = "Move line up" })
