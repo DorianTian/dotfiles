@@ -1,0 +1,28 @@
+# Carbon Friday — IBM Carbon Design System × CVD Adaptation
+# Based on IBM Carbon color tokens (carbon-design-system)
+# Design philosophy: "dominated by grays and the blue family"
+# ANSI mapping standardized for ghostty.lua compatibility
+# CVD fix: red → Carbon Orange, green → Carbon Teal
+
+palette = 0=#262626
+palette = 1=#ff832b
+palette = 2=#08bdba
+palette = 3=#f1c21b
+palette = 4=#78a9ff
+palette = 5=#be95ff
+palette = 6=#33b1ff
+palette = 7=#dfdfe0
+palette = 8=#525252
+palette = 9=#ffab91
+palette = 10=#3ddbd9
+palette = 11=#fddc69
+palette = 12=#a6c8ff
+palette = 13=#d4bbff
+palette = 14=#82cfff
+palette = 15=#f2f4f8
+background = #161616
+foreground = #f2f4f8
+cursor-color = #f2f4f8
+cursor-text = #161616
+selection-background = #393939
+selection-foreground = #f2f4f8

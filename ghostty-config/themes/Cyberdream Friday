@@ -1,0 +1,27 @@
+# Cyberdream Friday — Neon × CVD Adaptation
+# Base: cyberdream.nvim by scottmckendry (1.3k stars)
+# All neon accents share 0x5e/0xff DNA — cohesive "LED on OLED" aesthetic
+# CVD fix: red → neon orange, green → neon teal
+
+palette = 0=#16181a
+palette = 1=#ffbd5e
+palette = 2=#5effd0
+palette = 3=#f1ff5e
+palette = 4=#5ea1ff
+palette = 5=#ff5ef1
+palette = 6=#5ef1ff
+palette = 7=#c8c8c8
+palette = 8=#3c4048
+palette = 9=#ff5ea0
+palette = 10=#80ffd8
+palette = 11=#f5ff80
+palette = 12=#80b8ff
+palette = 13=#bd5eff
+palette = 14=#80f5ff
+palette = 15=#ffffff
+background = #16181a
+foreground = #ffffff
+cursor-color = #5ef1ff
+cursor-text = #16181a
+selection-background = #3c4048
+selection-foreground = #ffffff

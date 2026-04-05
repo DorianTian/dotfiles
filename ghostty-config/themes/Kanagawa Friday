@@ -1,0 +1,35 @@
+# Kanagawa Friday — Kanagawa Wave × CVD Adaptation
+# Base: Kanagawa Wave by rebelot (The Great Wave off Kanagawa)
+# Adapted for red-green color vision deficiency (deuteranopia/protanopia)
+#
+# v5: fix blue/cyan collision + selection overlap
+#   - cyan shifted from blue(212°) to teal(184°) — 36° gap from blue(220°)
+#   - br_cyan likewise shifted to bright teal
+#   - green(156°) ↔ cyan(184°) ↔ blue(220°): even ~30° spacing
+#
+# Color axis: amber/gold (warm) ↔ jade/mint (mid-cool) ↔ teal ↔ blue (cool)
+# Background: near-black with Kanagawa blue tint | Foreground: warm white
+# Contrast ratio fg/bg ≈ 17:1 (WCAG AAA)
+
+palette = 0=#0d0d14
+palette = 1=#e09040
+palette = 2=#48c090
+palette = 3=#c0a36e
+palette = 4=#7e9cd8
+palette = 5=#b07cd8
+palette = 6=#48b0b8
+palette = 7=#d0cdb8
+palette = 8=#727169
+palette = 9=#f0a830
+palette = 10=#68e0b0
+palette = 11=#e6c384
+palette = 12=#7fb4ca
+palette = 13=#c0a0e0
+palette = 14=#68c8d8
+palette = 15=#e8e4d0
+background = #0d0d14
+foreground = #e8e4d0
+cursor-color = #e8e4d0
+cursor-text = #0d0d14
+selection-background = #e8e4d0
+selection-foreground = #0d0d14

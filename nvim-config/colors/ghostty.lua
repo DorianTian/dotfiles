@@ -112,7 +112,8 @@ local function apply(c)
   local dim1 = blend(bg, fg, 0.06)
   local dim2 = blend(bg, fg, 0.12)
   local dim_fg = blend(bg, fg, 0.4)
-  local sel = c.sel_bg or blend(bg, blue, 0.25)
+  -- Ghostty sel_bg is for terminal inversion (opaque); Neovim Visual needs subtle overlay
+  local sel = blend(bg, blue, 0.25)
 
   local hi = function(name, opts) vim.api.nvim_set_hl(0, name, opts) end
 

@@ -1,0 +1,28 @@
+# TokyoNight Storm Friday — CVD Adaptation
+# Base: TokyoNight by Folke Lemaitre (7.9k stars)
+# Black bg + white fg + TN accent colors
+# CVD: red → TN orange, green → TN teal
+# Bright variants differentiated
+
+palette = 0=#0a0a0f
+palette = 1=#ff9e64
+palette = 2=#73daca
+palette = 3=#e0af68
+palette = 4=#7aa2f7
+palette = 5=#bb9af7
+palette = 6=#7dcfff
+palette = 7=#c0c0c0
+palette = 8=#4e5575
+palette = 9=#ffb480
+palette = 10=#90e0c0
+palette = 11=#f0c480
+palette = 12=#90b8fa
+palette = 13=#ccb0ff
+palette = 14=#95d8ff
+palette = 15=#ffffff
+background = #000000
+foreground = #ffffff
+cursor-color = #ffffff
+cursor-text = #000000
+selection-background = #364a82
+selection-foreground = #ffffff
