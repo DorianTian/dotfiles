@@ -483,10 +483,6 @@
   "gitlens.codeLens.enabled": false,
   // ══ 扩展 ══
   "database-client.autoSync": true,
-  "redhat.telemetry.enabled": true,
-  "console-ninja.featureSet": "Community",
-  "console-ninja.fontSize": 14,
-  "makefile.configureOnOpen": true,
   "security.promptForLocalFileProtocolHandling": false,
   "keyboard.dispatch": "keyCode",
   // ══ 代理（按需修改）══
