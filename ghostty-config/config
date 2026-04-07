@@ -65,8 +65,8 @@ clipboard-write = allow
 clipboard-paste-protection = true
 
 # === Scrollback ===
-# 5 万行 per surface，Claude Code 输出在 session 里有，不靠终端留
-scrollback-limit = 50000
+# 10 万行 per surface
+scrollback-limit = 80000
 
 # === 快捷键 ===
 # --- 分屏 (Warp 同款) ---
