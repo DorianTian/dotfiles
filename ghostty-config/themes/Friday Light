@@ -1,0 +1,28 @@
+# Friday Light — Friday 2.0 Light Theme
+# Signature theme for Friday AI assistant
+# Design: Luminance Ladder — darkened accents for WCAG AA (≥4.5:1) on warm white
+# CVD-safe: no red-green distinction, amber replaces red, jade replaces green
+# Background: warm white (#faf8f5) · Foreground: warm black (#1a1815)
+
+palette = 0=#1a1815
+palette = 1=#a06020
+palette = 2=#18784a
+palette = 3=#8a7020
+palette = 4=#2860a8
+palette = 5=#7840a8
+palette = 6=#387088
+palette = 7=#c0bab0
+palette = 8=#a0988a
+palette = 9=#b87030
+palette = 10=#289060
+palette = 11=#a08828
+palette = 12=#3870c0
+palette = 13=#9058c0
+palette = 14=#4880a0
+palette = 15=#504840
+background = #faf8f5
+foreground = #1a1815
+cursor-color = #1a1815
+cursor-text = #faf8f5
+selection-background = #1a1815
+selection-foreground = #faf8f5

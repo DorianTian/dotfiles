@@ -18,7 +18,7 @@ font-codepoint-map = U+3100-U+312F=LXGW WenKai Mono
 font-codepoint-map = U+FE30-U+FE4F=LXGW WenKai Mono
 
 # === 主题 ===
-theme = Kanagawa Friday
+theme = Friday Light
 
 # === 窗口 ===
 window-padding-x = 10

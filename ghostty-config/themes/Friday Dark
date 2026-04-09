@@ -1,0 +1,28 @@
+# Friday Dark — Friday 2.0 Dark Theme
+# Signature theme for Friday AI assistant
+# Design: Luminance Ladder — each accent occupies a unique brightness band
+# CVD-safe: no red-green distinction, amber replaces red, jade replaces green
+# Background: elevated dark gray (#16161a) · Foreground: warm white (#e0dcd0)
+
+palette = 0=#16161a
+palette = 1=#e09048
+palette = 2=#48b080
+palette = 3=#e8c868
+palette = 4=#5088d8
+palette = 5=#d0a0e8
+palette = 6=#78c8d8
+palette = 7=#a0a0a8
+palette = 8=#50505a
+palette = 9=#f0a858
+palette = 10=#60c898
+palette = 11=#f0d878
+palette = 12=#68a0e8
+palette = 13=#e0b8f0
+palette = 14=#90d8e8
+palette = 15=#f0ece0
+background = #16161a
+foreground = #e0dcd0
+cursor-color = #e0dcd0
+cursor-text = #16161a
+selection-background = #e0dcd0
+selection-foreground = #16161a
